@@ -1,0 +1,171 @@
+
+<ng-container>
+
+    <nav class="justify-between px-4 py-3 text-gray-700 border border-gray-200 rounded-lg sm:flex sm:px-5 bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center mb-3 space-x-1 md:space-x-2 rtl:space-x-reverse sm:mb-0">
+          <li>
+            <div class="flex items-center">
+              <a href="/dashboard" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Dashboard</a>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="rtl:rotate-180 w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+              </svg>
+              <a href="/investment-form" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Investment Form</a>
+            </div>
+          </li>
+        </ol>
+      </nav>
+    <div class="container mx-auto px-4 m-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-white border border-gray-200 rounded-lg shadow ">
+                <div class="p-4 bg-gray-100">
+                    <h2 class="text-md font-semibold">INVESTMENT DETAIL FORM</h2>
+                </div>
+                <div class="px-16 py-2">
+                    <form [formGroup]="investmentForm" (ngSubmit)="onSubmit()" class="investment-form space-y-4">
+                        <div  *ngIf="!showReview"> 
+                            <div class="mt-4">
+                                <label for="assetType" class="block text-sm font-medium py-2 text-gray-700">Asset Type:</label>
+                                <select
+                                   id="assetType"
+                                   formControlName="assetType"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-none focus:ring-blue-500 focus:border-blue-500 block w-full ps-2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   >
+                                   <option value="">Select an option</option>
+                                   <option *ngFor="let type of assetTypes" [value]="type">{{ type }}</option>
+                                </select>
+                                <div class="mt-1 text-sm text-red-500" *ngIf="investmentForm.get('assetType')?.touched && investmentForm.get('assetType')?.invalid">
+                                   Please select an asset type.
+                                </div>
+                             </div>
+                             <div class="mt-4">
+                                <label for="quantity" class="block text-sm py-2 font-medium text-gray-700">Quantity:</label>
+                                <input
+                                   type="number"
+                                   id="quantity"
+                                   formControlName="quantity"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-none focus:ring-blue-500 focus:border-blue-500 block w-full ps-2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   />
+                                <div class="mt-1 text-sm text-red-500" *ngIf="investmentForm.get('quantity')?.touched && investmentForm.get('quantity')?.invalid">
+                                   Quantity must be greater than 0.
+                                </div>
+                             </div>
+                             <div class="mt-4">
+                                <label for="purchasePrice" class="block text-sm py-2 font-medium text-gray-700">Purchase Price:</label>
+                                <input
+                                   type="number"
+                                   id="purchasePrice"
+                                   formControlName="purchasePrice"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-none focus:ring-blue-500 focus:border-blue-500 block w-full ps-2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   />
+                                <div class="mt-1 text-sm text-red-500" *ngIf="investmentForm.get('purchasePrice')?.touched && investmentForm.get('purchasePrice')?.invalid">
+                                   Purchase price must be greater than 0.
+                                </div>
+                             </div>
+                             <div class="mt-4">
+                                <label for="date" class="block text-sm font-medium py-2 text-gray-700">Purchase Date:</label>
+                                <input
+                                   type="date"
+                                   id="date"
+                                   formControlName="date"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-none focus:ring-blue-500 focus:border-blue-500 block w-full ps-2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   />
+                                <div class="mt-1 text-sm text-red-500" *ngIf="investmentForm.get('date')?.touched && investmentForm.get('date')?.invalid">
+                                   Date is required.
+                                </div>
+                             </div>
+                             <div class="mt-8 mb-16">
+                                <button type="button"     type="submit"
+                                [disabled]="!investmentForm.valid" class="mt3 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">REVIEW & SUBMIT</button>
+    
+             
+                             </div>
+                                        
+                        </div>
+                
+
+                        <div *ngIf="showReview">
+                            <p class="mb-6 text-lg pt-8  text-center text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Review Your Input before Submit</p>
+
+                            <div class="overflow-x-auto border-gray-200 border-2">
+                                <table class="min-w-full table-auto border-collapse">
+                                  <thead>
+                                    <tr class="bg-gray-100">
+                                      <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Field</th>
+                                      <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Value</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr class="border-t border-gray-200">
+                                      <td class="px-4 py-2 text-sm text-gray-600"><strong>Asset Type:</strong></td>
+                                      <td class="px-4 py-2 text-sm text-gray-800">{{ reviewData.assetType }}</td>
+                                    </tr>
+                                    <tr class="border-t border-gray-200">
+                                      <td class="px-4 py-2 text-sm text-gray-600"><strong>Quantity:</strong></td>
+                                      <td class="px-4 py-2 text-sm text-gray-800">{{ reviewData.quantity }}</td>
+                                    </tr>
+                                    <tr class="border-t border-gray-200">
+                                      <td class="px-4 py-2 text-sm text-gray-600"><strong>Purchase Price:</strong></td>
+                                      <td class="px-4 py-2 text-sm text-gray-800">{{ reviewData.purchasePrice }}</td>
+                                    </tr>
+                                    <tr class="border-t border-gray-200">
+                                      <td class="px-4 py-2 text-sm text-gray-600"><strong>Date:</strong></td>
+                                      <td class="px-4 py-2 text-sm text-gray-800">{{ reviewData.date | date:'mediumDate' }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            <button type="button" (click)="cancel()" class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">CANCEL</button>
+
+                            <button type="button" type="submit"class="mt-3 text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">SUBMIT</button>
+
+                            
+                        </div>
+                        
+                    </form>
+                </div>
+         
+            </div>
+    
+            <div class="bg-white border border-gray-200 rounded-lg shadow ">
+                <div class="p-4 bg-gray-100">
+                    <h2 class="text-md font-semibold">INVESTMENT LISTS</h2>
+                </div>
+
+                
+                <div class="overflow-x-auto m-4 border-2 border-gray-100">
+                    <table class="min-w-full table-auto border-collapse">
+                      <thead>
+                        <tr class="bg-gray-100">
+                          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Asset Type</th>
+                          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Quantity</th>
+                          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Purchase Price</th>
+                          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data_ of investments" class="border-t border-gray-200">
+                          <td class="px-4 py-2 text-sm text-gray-600">{{ data_.assetType || 'N/A' }}</td>
+                          <td class="px-4 py-2 text-sm text-gray-800">{{ data_.quantity || '0' }}</td>
+                          <td class="px-4 py-2 text-sm text-gray-800">{{ data_.purchasePrice || '0' | currency }}</td>
+                          <td class="px-4 py-2 text-sm text-gray-800">{{ data_.date  ? (data_.date  | date: 'dd-MMM-yyyy') : 'N/A'  }}</td>
+                          <td><svg (click)="deleteInvestment(data_.id)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-red-500 mx-2" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                          </svg></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+            </div>
+     
+        </div>
+      </div>
+</ng-container>
+
+  
